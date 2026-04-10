@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace HealthManager.Controllers
 {
@@ -17,15 +18,18 @@ namespace HealthManager.Controllers
         private readonly IAppointments _appointmentsService;
         private readonly IAppointmentReceipt _appointmentReceipt;
         private readonly IMailService _mailService;
+        private readonly ILogger<AppointmentController> _logger;
         public AppointmentController(HealthManagerContext context,
             IAppointments appointmentsService,
             IAppointmentReceipt appointmentReceipt,
-            IMailService mailService)
+            IMailService mailService,
+            ILogger<AppointmentController> logger)
         {
             _dbcontext = context;
             _appointmentsService = appointmentsService;
             _appointmentReceipt = appointmentReceipt;
             _mailService = mailService;
+            _logger = logger;
         }
         public IActionResult Index()
         {
