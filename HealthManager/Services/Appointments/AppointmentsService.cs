@@ -99,88 +99,93 @@ namespace HealthManager.Services.Appointments
 
         public async Task<MethodResponse> CheckAndCreateAppointments()
         {
-            try
-            {
-                var existingRegisters = await CheckForExistingAppointments();
+            var strategy = _context.Database.CreateExecutionStrategy();
 
-                if (existingRegisters.Success.Equals(true))
-                {
-                    return new MethodResponse { Success = false, Message = "There are already appointments for this month" };
-                }
-                else
-                {
-                    await CreateAppointmentsForAllDoctors();
-                    return new MethodResponse { Success = true, Message = "Appointments were successfully created." };
-                }
-            }
-            catch (Exception error)
+            return await strategy.ExecuteAsync(async () =>
             {
-                return new MethodResponse { Success = false, Message = error.ToString() };
-            }
+                try
+                {
+                    var existingRegisters = await CheckForExistingAppointments();
 
+                    if (existingRegisters.Success.Equals(true))
+                    {
+                        return new MethodResponse { Success = false, Message = "There are already appointments for this month" };
+                    }
+                    else
+                    {
+                        await CreateAppointmentsForAllDoctors();
+                        return new MethodResponse { Success = true, Message = "Appointments were successfully created." };
+                    }
+                }
+                catch (Exception error)
+                {
+                    return new MethodResponse { Success = false, Message = error.ToString() };
+                }
+            });
         }
 
         public async Task<MethodResponse> CreateDoctorAppointments(List<DoctorDTO> doctorList, int dayNumber)
         {
-            using var transaction = await _context.Database.BeginTransactionAsync();
-            try
-            {
-                int currentYear = DateTime.Now.Year;
-                int currentMonth = DateTime.Now.Month;
-                int daysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
 
-                foreach(DoctorDTO doctorProfile in doctorList)
+                using var transaction = await _context.Database.BeginTransactionAsync();
+                try
                 {
-                    var doctorWorkingDays = doctorProfile.WorkingDay;
-                    for (int i = dayNumber; i <= daysInMonth; i++)
+                    int currentYear = DateTime.Now.Year;
+                    int currentMonth = DateTime.Now.Month;
+                    int daysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
+
+                    foreach(DoctorDTO doctorProfile in doctorList)
                     {
-                        int currentDay = i;
-                        DateTime auxiDay = new DateTime(currentYear, currentMonth, currentDay);
-                        string dayName = auxiDay.ToString("dddd", new CultureInfo("en-US"));
-                        bool? isWorkingDay = (bool?)doctorWorkingDays.GetType().GetProperty(dayName)?.GetValue(doctorWorkingDays);
-
-                        if (isWorkingDay.Equals(true))
+                        var doctorWorkingDays = doctorProfile.WorkingDay;
+                        for (int i = dayNumber; i <= daysInMonth; i++)
                         {
-                            var doctorConsultationStart = doctorProfile.DoctorShift.ShiftStart;
-                            var doctorConsultationEnd = doctorProfile.DoctorShift.ShiftEnd;
-                            var doctorConsultDuration = doctorProfile.DoctorShift.ConsultDuration;
+                            int currentDay = i;
+                            DateTime auxiDay = new DateTime(currentYear, currentMonth, currentDay);
+                            string dayName = auxiDay.ToString("dddd", new CultureInfo("en-US"));
+                            bool? isWorkingDay = (bool?)doctorWorkingDays.GetType().GetProperty(dayName)?.GetValue(doctorWorkingDays);
 
-                            var hourCount = auxiDay.Add(doctorConsultationStart.ToTimeSpan());
-                            var limitHourAuxi = auxiDay.Add(doctorConsultationEnd.ToTimeSpan());
-
-                            var durationAuxi = doctorConsultDuration.Minute + doctorConsultDuration.Hour * 60;
-
-                            while (hourCount < limitHourAuxi)
+                            if (isWorkingDay.Equals(true))
                             {
-                                Appointment newAppointment = new Appointment
+                                var doctorConsultationStart = doctorProfile.DoctorShift.ShiftStart;
+                                var doctorConsultationEnd = doctorProfile.DoctorShift.ShiftEnd;
+                                var doctorConsultDuration = doctorProfile.DoctorShift.ConsultDuration;
+
+                                var hourCount = auxiDay.Add(doctorConsultationStart.ToTimeSpan());
+                                var limitHourAuxi = auxiDay.Add(doctorConsultationEnd.ToTimeSpan());
+
+                                var durationAuxi = doctorConsultDuration.Minute + doctorConsultDuration.Hour * 60;
+
+                                while (hourCount < limitHourAuxi)
                                 {
-                                    AppointmentId = new Guid(),
-                                    AppointmentDate = new DateOnly(currentYear, currentMonth, currentDay),
-                                    AppointmentHour = TimeOnly.FromDateTime(hourCount),
-                                    Status = "Available",
+                                    Appointment newAppointment = new Appointment
+                                    {
+                                        AppointmentId = new Guid(),
+                                        AppointmentDate = new DateOnly(currentYear, currentMonth, currentDay),
+                                        AppointmentHour = TimeOnly.FromDateTime(hourCount),
+                                        Status = "Available",
 
-                                    DoctorId = doctorProfile.Doctor.DoctorId,
+                                        DoctorId = doctorProfile.Doctor.DoctorId,
 
-                                };
-                                await _context.Appointments.AddAsync(newAppointment);
+                                    };
+                                    await _context.Appointments.AddAsync(newAppointment);
 
 
-                                hourCount = hourCount.AddMinutes(durationAuxi);
+                                    hourCount = hourCount.AddMinutes(durationAuxi);
+                                }
                             }
-                        }
 
+                        }
                     }
-                }
                 
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
-                return new MethodResponse { Success = true, Message = "Appointments created successfully" };
-            }
-            catch (Exception error)
-            {
-                await transaction.RollbackAsync();
-                return new MethodResponse { Success = false, Message = error.ToString() };
-            }
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                    return new MethodResponse { Success = true, Message = "Appointments created successfully" };
+                }
+                catch (Exception error)
+                {
+                    await transaction.RollbackAsync();
+                    return new MethodResponse { Success = false, Message = error.ToString() };
+                }
         }
     }
 }
