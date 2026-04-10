@@ -37,6 +37,10 @@ namespace HealthManager.Controllers
         }
         public async Task <IActionResult> ReserveAppointment()
         {
+            _logger.LogInformation("-------------------------");
+            _logger.LogInformation($"Usuario autenticado: {User.Identity.IsAuthenticated}");
+            _logger.LogInformation($"Claims: {string.Join(", ", User.Claims.Select(c => $"{c.Type}={c.Value}"))}");
+            _logger.LogInformation("-------------------------");
             DateTime today = DateTime.Now;
             DateOnly day = DateOnly.FromDateTime(today);
             TimeOnly hours = TimeOnly.FromDateTime(today);
