@@ -6,8 +6,8 @@
 
 <section class="h-100 w-100 d-flex flex-column justify-content-center align-items-center">
     <h2>Login</h2>     
-        <form method="post" asp-controller="Authorize" asp-action="Login" class="d-flex flex-column justify-content-center align-items-center gap-3">
-            <fieldset class="d-flex flex-column gap-1 w-100">
+        <form method="post" asp-controller="Authorize" asp-action="Login" class="w-50 d-flex flex-column justify-content-center align-items-center gap-3">
+            <fieldset class="d-flex flex-column gap-1 w-75">
                 <div class="d-flex w-100">
                     <label asp-for="Email" class="flex-grow-1">Email</label>
                     <span asp-validation-for="Email" class="text-danger"></span>
@@ -23,14 +23,14 @@
 
                 <input asp-for="Email" id="email" type="email" class="form-control" />
             </fieldset>
-            <fieldset class="d-flex flex-column gap-1 w-100">
+            <fieldset class="d-flex flex-column gap-1 w-75">
                 <div class="d-flex w-100">
                     <label asp-for="Password" class="flex-grow-1">Password</label>
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <input asp-for="Password" id="password" type="password" class="form-control" />
             </fieldset>
-            <fieldset class="d-flex flex-column gap-2 w-100">
+            <fieldset class="d-flex flex-column gap-2 w-75">
                 <button type="submit" class="btn btn-primary">Submit</button>
                 <p class="flex-grow-1">You don't have an account? Register <a asp-controller="Authorize" asp-action="Register">here</a></p>
             </fieldset>
