@@ -223,7 +223,7 @@ namespace HealthManager.Controllers
         public async Task <JsonResult> GetAppointmentHours(string day, int doctorId)
         {
             var now = DateTime.Now;
-            var dateFromString = DateTime.Parse(day);
+            var dateFromString = DateTime.ParseExact(day, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             var onlyDateFromDateTime = DateOnly.FromDateTime(dateFromString);
             var currentHour = TimeOnly.FromDateTime(DateTime.Now).AddHours(1);
             var today = DateOnly.FromDateTime(now);
