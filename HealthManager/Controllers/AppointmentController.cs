@@ -61,6 +61,7 @@ namespace HealthManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ReserveAppointment(AppointmentViewModel appointmentRequest)
         {
             if (ModelState.IsValid)
