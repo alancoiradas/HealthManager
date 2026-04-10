@@ -6,9 +6,9 @@ namespace HealthManager.Models.DTO
     {
         public Guid AppointmentId { get; set; }
         [Required]
-        public DateOnly AppointmentDate { get; set; }
+        public string AppointmentDate { get; set; }
         [Required]
-        public TimeOnly AppointmentHour { get; set; }
+        public string AppointmentHour { get; set; }
         [Required]
         public string Specialty { get; set; }
         [Required]
