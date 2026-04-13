@@ -33,5 +33,11 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Authorize\Register.cshtml" />
   </ItemGroup>
+	
+	<ItemGroup>
+      <Content Include="Services/Mail/mailprofile.html">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
 
 </Project>
