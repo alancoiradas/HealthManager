@@ -98,6 +98,10 @@ public class Program
 
         QuestPDF.Settings.License = LicenseType.Community;
 
+        builder.Logging.ClearProviders();
+        builder.Logging.AddConsole();
+        builder.Logging.SetMinimumLevel(LogLevel.Information);
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
