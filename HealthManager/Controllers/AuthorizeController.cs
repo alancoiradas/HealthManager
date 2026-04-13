@@ -127,6 +127,7 @@ namespace HealthManager.Controllers
                             PhoneNumber = patientData.PhoneNumber,
                             Gender = patientData.Gender,
                             Sex = patientData.Sex,
+                            Role="Patient"
                         };
                         await _dbcontext.Patients.AddAsync(newPatient);
                         await _dbcontext.SaveChangesAsync();
