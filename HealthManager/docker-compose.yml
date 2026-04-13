@@ -1,0 +1,40 @@
+services:
+ healthmanager:
+  build: .
+  ports:
+   - "${HM_PORT}:8080"
+  depends_on:
+   sqlserver:
+    condition: service_healthy
+  environment:
+    - ASPNETCORE_ENVIRONMENT=Production
+    - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
+    - InitialData__Mails__Doctor1=${DOCTOR1_MAIL}
+    - InitialData__Passwords__Doctor1=${DOCTOR1_PASSWORD}
+    - InitialData__Mails__Doctor2=${DOCTOR2_MAIL}
+    - InitialData__Passwords__Doctor2=${DOCTOR2_PASSWORD}
+    - InitialData__Mails__Doctor3=${DOCTOR3_MAIL}
+    - InitialData__Passwords__Doctor3=${DOCTOR3_PASSWORD}
+    - Email__Host=${MAIL_HOST}
+    - Email__Username=${MAIL_USERNAME}
+    - Email__Password=${MAIL_PASSWORD}
+    - Email__Port=${MAIL_PORT}
+    - JWT__secret-key=${SECRET-KEY}
+  volumes:
+      - dataprotection-keys:/keys
+ sqlserver:
+  image: mcr.microsoft.com/mssql/server:2022-latest
+  ports:
+   - "${SQL_PORT}:1433"
+  environment:
+   - ACCEPT_EULA=Y
+   - MSSQL_SA_PASSWORD=${HM_PASSWORD}
+   - MSSQL_PID=Express
+  healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"${HM_PASSWORD}\" -Q 'SELECT 1' -No -C || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 25s
+volumes:
+  dataprotection-keys:
