@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace HealthManager.Controllers
 {
@@ -17,15 +18,18 @@ namespace HealthManager.Controllers
         private readonly IAppointments _appointmentsService;
         private readonly IAppointmentReceipt _appointmentReceipt;
         private readonly IMailService _mailService;
+        private readonly ILogger<AppointmentController> _logger;
         public AppointmentController(HealthManagerContext context,
             IAppointments appointmentsService,
             IAppointmentReceipt appointmentReceipt,
-            IMailService mailService)
+            IMailService mailService,
+            ILogger<AppointmentController> logger)
         {
             _dbcontext = context;
             _appointmentsService = appointmentsService;
             _appointmentReceipt = appointmentReceipt;
             _mailService = mailService;
+            _logger = logger;
         }
         public IActionResult Index()
         {
@@ -33,6 +37,10 @@ namespace HealthManager.Controllers
         }
         public async Task <IActionResult> ReserveAppointment()
         {
+            _logger.LogInformation("-------------------------");
+            _logger.LogInformation($"User authenticated: {User.Identity.IsAuthenticated}");
+            _logger.LogInformation($"Claims: {string.Join(", ", User.Claims.Select(c => $"{c.Type}={c.Value}"))}");
+            _logger.LogInformation("-------------------------");
             DateTime today = DateTime.Now;
             DateOnly day = DateOnly.FromDateTime(today);
             TimeOnly hours = TimeOnly.FromDateTime(today);
@@ -53,89 +61,142 @@ namespace HealthManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ReserveAppointment(AppointmentViewModel appointmentRequest)
         {
-            if (ModelState.IsValid)
+            try 
             {
-                var userId = User.FindFirst("Id")?.Value;
-                int.TryParse(userId, out int userIdInt);
-                DateOnly today = DateOnly.FromDateTime(DateTime.Now);
-                int todayInt = today.Day;
-                TimeOnly currentHour = TimeOnly.FromDateTime(DateTime.Now);
-                var existingAppointment = await _dbcontext.Appointments
-                    .Where(x =>  x.DoctorId == appointmentRequest.DoctorId 
-                                && x.PatientId == userIdInt
-                                && (x.AppointmentDate.Month == appointmentRequest.AppointmentDate.Month 
-                                    || x.AppointmentDate.Month == appointmentRequest.AppointmentDate.AddMonths(1).Month)
-                                    && (x.AppointmentDate.Day > todayInt || (x.AppointmentDate == today && x.AppointmentHour > currentHour))
-                                && x.Status == "Reserved"
-                                && x.Attended == null)
-                    .FirstOrDefaultAsync();
+                _logger.LogWarning("----------------------------------T");
+                _logger.LogWarning("POST excecuted");
+                _logger.LogWarning("------------------------------------");
 
-
-                if (existingAppointment != null)
-                {
-                    ViewData["Appointment"] = "There's already an existing appointment for this patient. " +
-                            "If you want to set another appointment, please cancel the existing one first";
-                        
-                            
-                    return View();
-                }
+                _logger.LogWarning("-----------------INFO-----------------T");
                 
-                Appointment reserveAppointment = await _dbcontext.Appointments.Where(x => x.DoctorId == appointmentRequest.DoctorId
-                                && x.AppointmentDate == appointmentRequest.AppointmentDate
-                                && x.AppointmentHour == appointmentRequest.AppointmentHour
-                                && x.Status == "Available").FirstOrDefaultAsync();
-                if (reserveAppointment != null)
+                _logger.LogWarning("------------------------------------");
+
+                if (ModelState.IsValid)
                 {
-                    reserveAppointment.Status = "Reserved";
-                    reserveAppointment.PatientId = userIdInt;
-                    _dbcontext.Appointments.Update(reserveAppointment);
-                    await _dbcontext.SaveChangesAsync();
+                    var userId = User.FindFirst("Id")?.Value;
+                    int.TryParse(userId, out int userIdInt);
 
-                    var patientData = _dbcontext.Patients.Where(x => x.PatientId == userIdInt).Select(x => new
+                    var dateFromString = DateTime.ParseExact(appointmentRequest.AppointmentDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    var appointmentDate = DateOnly.FromDateTime(dateFromString);
+
+                    var appointmentHour = TimeOnly.Parse(appointmentRequest.AppointmentHour);
+
+                    DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+                    int todayInt = today.Day;
+
+                    TimeOnly currentHour = TimeOnly.FromDateTime(DateTime.Now);
+                    var existingAppointment = await _dbcontext.Appointments
+                        .Where(x => x.DoctorId == appointmentRequest.DoctorId
+                                    && x.PatientId == userIdInt
+                                    && (x.AppointmentDate.Month == appointmentDate.Month
+                                        || x.AppointmentDate.Month == appointmentDate.AddMonths(1).Month)
+                                        && (x.AppointmentDate.Day > todayInt || (x.AppointmentDate == today && appointmentHour > currentHour))
+                                    && x.Status == "Reserved"
+                                    && x.Attended == null)
+                        .FirstOrDefaultAsync();
+
+                    _logger.LogInformation($"DoctorId: {appointmentRequest.DoctorId}");
+                    _logger.LogInformation($"Date: {appointmentRequest.AppointmentDate}");
+                    _logger.LogInformation($"Hour: {appointmentRequest.AppointmentHour}");
+
+
+
+                    if (existingAppointment != null)
                     {
-                        PatientEmail = x.Email,
-                        PatientName = x.Name + " " + x.Surname,
-                    }).FirstOrDefault();
+                        ViewData["Appointment"] = "There's already an existing appointment for this patient. " +
+                                "If you want to set another appointment, please cancel the existing one first";
 
-                    var doctorData = _dbcontext.Doctors.Where(x => x.DoctorId == appointmentRequest.DoctorId).Select(x => new
-                    {
-                        FullName = $"{x.Name} {x.Surname}",
-                        Specialty = x.SpecialtyNavigation.SpecialtyName,
 
-                    }).FirstOrDefault();
+                        return View();
+                    }
 
-                    AppointmentDataPDFDTO appointmentData = new AppointmentDataPDFDTO
-                    {
-                        PatientName = patientData.PatientName,
-                        DoctorName = doctorData.FullName,
-                        AppointmentDate = reserveAppointment.AppointmentDate,
-                        AppointmentHour = reserveAppointment.AppointmentHour,
-                        Specialty = doctorData.Specialty
 
-                    };
 
-                    var pdfByte = _appointmentReceipt.CreateAppointmentReceipt(appointmentData);
+                    Appointment reserveAppointment = await _dbcontext.Appointments.Where(x => x.DoctorId == appointmentRequest.DoctorId
+                                    && x.AppointmentDate == appointmentDate
+                                    && x.AppointmentHour == appointmentHour
+                                    && x.Status == "Available").FirstOrDefaultAsync();
 
+                    _logger.LogInformation("------------------------");
                     
+                    _logger.LogInformation("------------------------");
 
-                    MailDTO mailSample = new MailDTO
+                    if (reserveAppointment == null)
                     {
-                        DestinataryMail = patientData?.PatientEmail,
-                        DestinataryName = patientData?.PatientName,
-                        MailSubject = $"Medical appointment requested at Healthmanager.",
-                        MailTitle = "Appointment confirmation.",
-                    };
+                        _logger.LogWarning("Appointment not found");
+                    }
 
-                    _mailService.SendAppointmentConfirmationMail(mailSample, pdfByte);
+                    if (reserveAppointment != null)
+                    {
+                        _logger.LogInformation(reserveAppointment.Status);
+                        reserveAppointment.Status = "Reserved";
+                        reserveAppointment.PatientId = userIdInt;
+                        _dbcontext.Appointments.Update(reserveAppointment);
+                        await _dbcontext.SaveChangesAsync();
+
+                        var patientData = _dbcontext.Patients.Where(x => x.PatientId == userIdInt).Select(x => new
+                        {
+                            PatientEmail = x.Email,
+                            PatientName = x.Name + " " + x.Surname,
+                        }).FirstOrDefault();
+
+                        var doctorData = _dbcontext.Doctors.Where(x => x.DoctorId == appointmentRequest.DoctorId).Select(x => new
+                        {
+                            FullName = $"{x.Name} {x.Surname}",
+                            Specialty = x.SpecialtyNavigation.SpecialtyName,
+
+                        }).FirstOrDefault();
+
+                        AppointmentDataPDFDTO appointmentData = new AppointmentDataPDFDTO
+                        {
+                            PatientName = patientData.PatientName,
+                            DoctorName = doctorData.FullName,
+                            AppointmentDate = reserveAppointment.AppointmentDate,
+                            AppointmentHour = reserveAppointment.AppointmentHour,
+                            Specialty = doctorData.Specialty
+
+                        };
+
+                        var pdfByte = _appointmentReceipt.CreateAppointmentReceipt(appointmentData);
+
+
+
+                        MailDTO mailSample = new MailDTO
+                        {
+                            DestinataryMail = patientData?.PatientEmail,
+                            DestinataryName = patientData?.PatientName,
+                            MailSubject = $"Medical appointment requested at Healthmanager.",
+                            MailTitle = "Appointment confirmation.",
+                        };
+
+                        _mailService.SendAppointmentConfirmationMail(mailSample, pdfByte);
+
+                    }
+
+                    return RedirectToAction("MyAppointments", "PatientDashboard");
+                }
+                _logger.LogInformation("----------------------------Errors-------------------------------");
+                foreach (var error in ModelState.Values.SelectMany(x => x.Errors))
+                {
+                    _logger.LogError($"ModelState Error: {error.ErrorMessage}");
 
                 }
-
-                return RedirectToAction("MyAppointments", "PatientDashboard");
+                _logger.LogInformation("----------------------------Errors-------------------------------");
+                return View(appointmentRequest);
             }
-
-            return View(appointmentRequest);
+            catch (Exception ex) 
+            {
+                _logger.LogInformation("----------------------------Errors-------------------------------");
+                Console.WriteLine();
+                _logger.LogError(ex.Message);
+                Console.WriteLine();
+                _logger.LogInformation("----------------------------Errors-------------------------------");
+                return View(appointmentRequest);
+            }
+            
         }
 
         
@@ -162,7 +223,7 @@ namespace HealthManager.Controllers
         public async Task <JsonResult> GetAppointmentHours(string day, int doctorId)
         {
             var now = DateTime.Now;
-            var dateFromString = DateTime.Parse(day);
+            var dateFromString = DateTime.ParseExact(day, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             var onlyDateFromDateTime = DateOnly.FromDateTime(dateFromString);
             var currentHour = TimeOnly.FromDateTime(DateTime.Now).AddHours(1);
             var today = DateOnly.FromDateTime(now);

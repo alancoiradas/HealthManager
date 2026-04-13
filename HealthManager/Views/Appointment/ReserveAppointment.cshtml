@@ -6,6 +6,7 @@
 
 <section class="w-100 d-flex justify-content-center align-items-center mt-5">
     <form method="post" asp-controller="Appointment" asp-action="ReserveAppointment" class="d-flex flex-column gap-3">
+        @Html.AntiForgeryToken()
         <fieldset class="form-group">
             <label asp-for="Specialty">Specialty</label>
             <select asp-for="Specialty" class="form-control" asp-items="ViewBag.Specialties">
@@ -144,6 +145,8 @@
 
                         if (response.length > 0) {
                             $.each(response, function (index, date) {
+
+                         
                                 selectDate.append($('<option>', {
                                     value: date,
                                     text: date
