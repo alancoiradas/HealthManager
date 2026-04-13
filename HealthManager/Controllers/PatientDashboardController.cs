@@ -3,6 +3,7 @@ using HealthManager.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace HealthManager.Controllers
 {
@@ -54,7 +55,7 @@ namespace HealthManager.Controllers
                 AppointmentId = x.AppointmentId,
                 DoctorName = x.Doctor.Name + " " + x.Doctor.Surname,
                 DoctorSpecialty = x.Doctor.SpecialtyNavigation.SpecialtyName,
-                AppointmentDate = x.AppointmentDate,
+                AppointmentDate = DateOnly.ParseExact(x.AppointmentDate.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture),
                 AppointmentHour = x.AppointmentHour
             }).ToList();
 

@@ -2,31 +2,265 @@
     ViewData["Title"] = "Home";
 }
 
-<section class="w-100 h-100 d-flex justify-content-center align-items-center p-4">
-    <div class="w-75 d-flex flex-column justify-content-center align-items-start" id="text-container">
-        <h2 class="mb-4">The platform that helps you to organize your medical appointments.</h2>
-        <p>
-            Welcome to Healthmanager, the digital platform that puts health at your fingertips. With our solution, managing and booking medical appointments becomes a fast, simple, and secure experience. Designed with your well-being in mind, our intuitive interface guides you step by step to connect with trusted health professionals, adapting to your lifestyle.
-        </p>
-        <p>
-            At Healthmanager, we believe that healthcare should never be complicated. Our commitment is to facilitate access to quality health services, allowing you to focus on what truly matters: your health and that of your family.
-        </p>
-        <p>
-            Discover a new way to manage your appointments and experience the future of healthcare in a modern and user-friendly environment.
-        </p>
-       
-    </div>
-    <div class="image-container rounded-circle shadow-sm">
-        <img src="~/Media/Images/reserve-appointment.jpg" class="w-100 h-100 object-fit-cover rounded-circle" id="image" />
-    </div>
+<section class="w-100 h-100 d-flex justify-content-center flex-column align-items-center gap-5">
+    <section class="w-100 image-container shadow">
+       <div class="w-100 h-100 text-container">
+            <article class="d-flex flex-column justify-content-center align-items-start h-75 w-75 flex-wrap p-3 z-1">
+                    <h1 class="text-white">HealthManager</h1>
+                    <p class="fs-4 text-white">Welcome to HealthManager. A project developed to simulate the functionality of a healthcare system.</p>
+                    <p class="fs-4 text-white">I've built this platform in order to try new challenges, improve my system design capabilities and learn new tools that can help me to become a better developer.</p>
+                    <p class="fs-4 text-white"></p>
+                    <div class="d-flex align-items-baseline gap-3">
+                        <p class="fs-4 text-white mr-2">You can check the code of this project right here: </p> <button class="btn btn-dark fs-5"><i class="fa-brands fa-github"></i> Github</button>
+                    </div>
+            </article>
+       </div>
+    </section>
+
+    <section class="w-100 d-flex flex-column justify-content-center align-items-center p-2 mt-3 gap-3">
+        <div>
+            <h3>¿What functions does this project have?</h3>
+        </div>
+        <div class="w-100">
+            <div class="d-flex justify-content-center align-items-stretch gap-5 flex-wrap">
+
+                <div class="d-flex flex-column justify-content-around gap-0 rounded-2 w-25 shadow-sm p-4 functions-card">
+                    <div class="text-center">
+                        <i class="fa-solid fa-computer fs-3 text-black"></i>
+                    </div>
+                    <div class="text-center flex-grow-1">
+                        <h4>Appointment management</h4>
+                        <p>A patient can reserve and cancel appointments at any time.</p>
+                        <p>Patients can also view their next appoinments in a dashboard where the most important information is available.</p>
+                        <p>Note that users cannot reserve more than one appointment with the same doctor. They have to cancel the current appointment before reserving another one with the same professional.</p>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column justify-content-around gap-0 rounded-2 w-25 shadow-sm p-4 functions-card">
+                    <div class="text-center">
+                        <i class="fa-solid fa-book-medical fs-3 text-black"></i>
+                    </div>
+                    <div class="text-center flex-grow-1">
+                        <h4>Medical history</h4>
+                        <p>From an appointment, doctors can create a medical record to save information from each consult.</p>
+                        <p>The objective of this is to have a way to check the evolution of a health state of a patient if it is required. Useful if said patient is under treatment for example.</p>
+                        <p>This history can be consulted by the doctor anytime in its own section. Just by typing the ID of the patient he can get the complete medical history.</p>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column justify-content-around gap-0 rounded-2 w-25 shadow-sm p-4 functions-card">
+                    <div class="text-center">
+                        <i class="fa-solid fa-screwdriver-wrench fs-3 text-black"></i>
+                    </div>
+                    <div class="text-center flex-grow-1">
+                        <h4>Testing</h4>
+                        <p>Unit and integration tests are runned in this application in order to guarantee that the diferent methods excecutes successfully.</p>
+                        <p>It also helps to improve quality of code if edge cases are detected.</p>
+                        <p>Error tests are also runned to verify the behavior of a function when it has to throw an error.</p>
+                        <p>The diferent methods through the project were excecuted with a variety of tests to ensure its functionality before a hypotetical scenario of a launching to production and being tested by the users.</p>
+                    </div>
+                </div>
+              
+                <div class="d-flex flex-column justify-content-around gap-0 rounded-2 w-25 shadow-sm p-4 functions-card">
+                    <div class="text-center">
+                        <i class="fa-solid fa-users fs-3 text-black"></i>
+                    </div>
+                    <div class="text-center flex-grow-1">
+                        <h4>Role based authentication & authorization</h4>
+                        <p>This project has ways to isolate systems for different users from one another.</p>
+                        <p>This way, users with some role cannot access methods or sections from users with another role (from Patients to Doctors for example).</p>
+                        <p>With those restrictions, security and limits are stablished.</p>
+                    </div>
+                </div>
+
+
+
+                <div class="d-flex flex-column justify-content-center gap-0 rounded-2 w-25 shadow-sm p-4 functions-card">
+                    <div class="text-center">
+                        <i class="fa-solid fa-file-arrow-down fs-3 text-black"></i>
+                    </div>
+                    <div class="text-center flex-grow-1">
+                        <h4>PDF appointment receipt</h4>
+                        <p>When a patient reserves an appointment, a PDF archive is created, this archive contains information about the appointment the user just reserved</p>
+                        <p>The information in it goes from date and hour of the consult to name and specialty from the doctor.</p>
+                        <p>This information is sent via email after the reserve is completed.</p>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column justify-content-center gap-0 rounded-2 w-25 shadow-sm p-4 functions-card">
+                    <div class="text-center">
+                        <i class="fa-solid fa-envelope fs-3 text-black"></i>
+                    </div>
+                    <div class="text-center flex-grow-1">
+                        <h4>Mailing</h4>
+                        <p>A mailing system was created to help with the PDF system.</p>
+                        <p>Appointment receipts are sent via email to ensure they have a way to check out the appointment information without making them enter the application over and over.</p>
+                        <p>This way they can have the information they need at hand and consult it whenever they want.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class=" d-flex flex-column justify-content-center align-items-center w-75 rounded shadow-sm">
+        <h3>Technologies used in this project</h3>
+        <article class="d-flex justify-content-between align-items-baseline w-75 p-5">
+            <div>
+                    <h4>Backend</h4>
+                    <ul>
+                        <li>.NET 8+</li>
+                        <li>C#</li>
+                        <li>ASP.NET Core MVC</li>
+                        <li>Entity Framework Core</li>
+                        <li>SQL Server</li>
+                        <li>LINQ</li>
+                        <li>Quest PDF</li>
+                        <li>Mailkit</li>
+                    </ul>
+            </div>
+            <div>
+                    <h4>Frontend</h4>
+                    <ul>
+                        <li>HTML</li>
+                        <li>CSS</li>
+                        <li>Bootstrap</li>
+                        <li>Razor Views</li>
+                        <li>jQuery</li>
+
+                    </ul>
+            </div>
+            <div>
+                    <h4>Testing</h4>
+                    <ul>
+                        <li>xUnit</li>
+                        <li>Docker</li>
+                        <li>Testscontainers</li>
+                    </ul>
+            </div>
+        </article>
+    </section>
+
+
+    <section>
+        <article class="d-flex flex-column justify-content-center align-items-center gap-3">
+            <h3>Q&A</h3>
+
+            <details class="shadow">
+                <summary class="mb-2">¿How did you manage to create the appointments?</summary>
+                <p>The appointments are created based on the amount of doctors registered in the platform.</p>
+                <p>The method in charge of this task takes information of the days the doctor works, the start and end of their shift, and the duration of the consult. And then creates the appointments in the database based on that data.</p>
+                <p>For this, I made use of transactions in database. That way, I can guarantee that if some error happens during excecution of this process, the method rolls back and cancels the task.</p>
+                <p>With this approach there can't be any incomplete data in the database</p>
+            </details>
+
+            <details class="shadow">
+                <summary class="mb-2">¿What's the limit of appointments created each time?</summary>
+                <p>The limit of appointments created each time the method excecutes corresponds to the days in the current month.</p>
+                <p>It was designed like this to not overload the method with the amount of data it has to create in the database at once.</p>
+            </details>
+
+            <details class="shadow">
+                <summary class="mb-2">¿The appointments are created manually?</summary>
+                <p>Not at all! Appointments are created via Background Tasks.</p>
+                <p>Once the application starts end every month after that, the system checks in the database if there's appointments for the current month.</p>
+                <p>If there isn't any, it creates the appointments so that they're redy to be reserved.</p>
+            </details>
+
+            <details class="shadow">
+                <summary class="mb-2">The doctors system could be a little bit complex, ¿how did you manage to create that in the database?</summary>
+                <p>Designing the Doctor system with all the tasks involved was truly a challenge.</p>
+                <p>What I did was separate the system in modules to have the registers in the database separated by task (Doctor profile, shift information, specialty and working days).</p>
+                <p>Those registers are connected by the ID of the doctor as a foreign key to ensure all the information created are link to a specific doctor and can be used easily when its required.</p>
+            </details>
+
+            <details class="shadow">
+                <summary class="mb-2">Did you make use of security practices?</summary>
+                <p>I've applied validations on models and DTOs, establishing restrictions about which type of data each property must have before doing any change in the database.</p>
+                <p>This validations are excecuted in the controller as a first step. If the validation fails, the data sent by the user returns to the view indicating what was wrong with said data.</p>
+                <p>Password hashing was also implemented to ensure safety and protect users credentials in case of an attack.</p>
+            </details>
+
+            <details class="shadow">
+                <summary class="mb-2">Why did you choose MVC pattern?</summary>
+                <p>The reason why I chose this pattern is to have an organized structure in my project. With the MVC pattern, I can keep the different parts of the application separated 
+                    and work on them independently. It also helps keep the project clean and maintainable.
+                </p>
+                <p>This is the first time I have developed an application of this scale, so I wanted to implement good practices and software architecture concepts.</p>
+            </details>
+
+            <details class="shadow">
+                <summary class="mb-2">You've always looked for ways to improve the application?</summary>
+                <p>I always keep an eye on how every function works and if there's a way to improve it somehow.</p>
+                <p>For example, when I was testing the function of medical history, initially the content that the input took to search the patient
+                    was its name, but then I started having the feeling that property was not optimal to use in a function like this, and then I started
+                    thinking on things like:
+                </p>
+                <ul>
+                    <li>What if there's two or more patients with the same name?</li>
+                    <li>There should be some data that's unique to every patient.</li>
+                    <li>Using the name to search data like this wouldn't be optimal in a real world scenario.</li>
+                </ul>
+                <p>And then I remembered the number of ID each person has,
+                    and decided to use that unique value to use it on the search in the system of medical history.
+                </p>
+                <p>With that change, the doctor only obtains the medical records of one specific patient avoiding the risk of mixing data.</p>
+            </details>
+
+            <details class="shadow">
+                <summary class="mb-2">How's the state of this project?</summary>
+                <p>The bases of this project are currently finished. However, there's a couple things that probably will be implemented in the coming future to update this project.</p>
+                <p>Said functions include things such as:</p>
+                <ul>
+                    <li>Account confirmation</li>
+                    <li>Password change</li>
+                    <li>Improvements in admin system (adding graphics to retrieve informations about the specialties consulted each month, age range that attended the most, symptoms detected, etc.)</li>
+                </ul>
+            </details>
+        </article>
+    </section>
 </section>
 
 <style>
     .image-container{
-        width: 350px;
-        height: 350px;
+        height: 90dvh;
+        background-image: url("/Media/Images/reserve-appointment.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        
     }
 
+    .image-container::before{
+
+            content: "";
+            position: relative;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+    }
+
+        .text-container {
+            position: relative;
+            z-index: 1;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+    details {
+        width: 100%;
+        max-width: 772px;
+        padding: 1rem;
+        border: 2px solid;
+        border-radius: 25px;
+        transition: max-height 0.3s ease-out;
+    }
+        details[open] {
+            max-width: 772px;
+        }
+
+    .functions-card{
+        min-height: 475px; 
+        max-height: 475px;
+    }
     @@media(max-width: 540px){
         section{
             flex-direction: column-reverse !important;
