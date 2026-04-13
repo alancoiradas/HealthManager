@@ -36,7 +36,8 @@ public class Program
 
         builder.Services.AddDbContext<HealthManagerContext>(options =>
         {
-            options.UseSqlServer(builder.Configuration.GetConnectionString("HealthManager"));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), sql => sql.EnableRetryOnFailure());
+
         });
 
         //Añadir dependencias
