@@ -92,6 +92,10 @@ public class Program
             option.AccessDeniedPath = "/Authorize/Login";
         });*/
 
+        builder.Services.AddDataProtection()
+            .PersistKeysToFileSystem(new DirectoryInfo("/keys"))
+            .SetApplicationName("HealthManager");
+
         QuestPDF.Settings.License = LicenseType.Community;
 
         var app = builder.Build();
