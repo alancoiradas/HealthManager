@@ -36,7 +36,7 @@ namespace HealthManagerIntegrationTests.ControllerTests.AuthTests
         {
             //Arrange
 
-            PatientViewModel testPatient = new PatientViewModel
+            PatientDTO testPatient = new PatientDTO
             {
                 Name = "Rosalia",
                 Surname = "Benitez",
@@ -68,7 +68,7 @@ namespace HealthManagerIntegrationTests.ControllerTests.AuthTests
         {
             //Arrange
 
-            PatientViewModel testPatient = new PatientViewModel
+            PatientDTO testPatient = new PatientDTO
             {
                 Name = "Rosalia",
                 Surname = "Benitez",
@@ -100,7 +100,7 @@ namespace HealthManagerIntegrationTests.ControllerTests.AuthTests
         {
             //Arrange 
 
-            PatientViewModel testPatient = new PatientViewModel
+            PatientDTO testPatient = new PatientDTO
             {
                 Name = "Rosalia",
                 Surname = null,
