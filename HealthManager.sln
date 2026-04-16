@@ -1,10 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+<<<<<<< Updated upstream
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthManager", "HealthManager\HealthManager.csproj", "{7B073149-4151-4784-8D68-ED89E626BE45}"
 EndProject
+=======
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11415.280 d18.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthManager", "HealthManager\HealthManager.csproj", "{7B073149-4151-4784-8D68-ED89E626BE45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthManagerIntegrationTests", "HealthManager.IntegrationTests\HealthManagerIntegrationTests.csproj", "{49872437-EF65-784F-114D-98AB53CCDBB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthManagerUnitTests", "HealthManagerTest\HealthManagerUnitTests.csproj", "{E54F33FA-48F0-A57F-AA3F-862BF280E2C1}"
+EndProject
+>>>>>>> Stashed changes
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +27,17 @@ Global
 		{7B073149-4151-4784-8D68-ED89E626BE45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B073149-4151-4784-8D68-ED89E626BE45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B073149-4151-4784-8D68-ED89E626BE45}.Release|Any CPU.Build.0 = Release|Any CPU
+<<<<<<< Updated upstream
+=======
+		{49872437-EF65-784F-114D-98AB53CCDBB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49872437-EF65-784F-114D-98AB53CCDBB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49872437-EF65-784F-114D-98AB53CCDBB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49872437-EF65-784F-114D-98AB53CCDBB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E54F33FA-48F0-A57F-AA3F-862BF280E2C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E54F33FA-48F0-A57F-AA3F-862BF280E2C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E54F33FA-48F0-A57F-AA3F-862BF280E2C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E54F33FA-48F0-A57F-AA3F-862BF280E2C1}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> Stashed changes
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
