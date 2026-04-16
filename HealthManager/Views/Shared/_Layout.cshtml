@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/HealthManager.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://kit.fontawesome.com/8afc90d823.js" crossorigin="anonymous"></script>
 </head>
 <body class="d-flex flex-column vh-100 mb-0">
     <header class="shadow d-flex flex-column justify-content-center">
@@ -16,7 +17,10 @@
 
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light">
             <div class="container-fluid d-flex justify-content-between align-items-baseline">
-                <a class="navbar-brand w-50" asp-area="" asp-controller="Home" asp-action="Index">HealthManager</a>
+                <div class="navbar-brand w-50 fw-light">
+                    <a class="navbar-brand" id="healthmanager-home" asp-area="" asp-controller="Home" asp-action="Index">HealthManager</a>
+                </div>
+                
                 <div class="flex-grow-1 flex-lg-grow-0">
                     <!--<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -26,7 +30,6 @@
                     @if ((string)@ViewData["Title"] == "Home")
                     {
                         <div class=" d-flex justify-content-between w-100">
-                            <!--d-sm-inline-flex  flex-grow-1-->
                             <ul class="navbar-nav d-flex gap-2 w-100 flex-row">
 
                                 <li class="nav-item btn-group">
@@ -51,7 +54,7 @@
         
     </header>
     <div class="flex-grow-1 d-flex justify-content-center align-items-center">
-        <main role="main" class="pb-3 h-75 w-75">
+        <main role="main" class="w-100 h-100 pb-3">
             @RenderBody()
         </main>
     </div>
@@ -59,18 +62,12 @@
     <footer class="border-top footer text-muted">
         <div class="d-flex flex-column justify-content-start align-items-center gap-1 gap-lg-2 flex-lg-row w-100">
             <div>
-                🔗 <a href="https://github.com/tuUsuario/healthmanager" target="_blank">View code on GitHub</a> &nbsp;|&nbsp;
-                
+                <a href="https://github.com/leocoiradas/healthmanager" target="_blank"><i class="fa-brands fa-github fs-2 text-black"></i></a> &nbsp;|&nbsp;
             </div>
             <div>
-                💼 <a href="https://linkedin.com/in/tuUsuario" target="_blank">Connect on LinkedIn</a> &nbsp;|&nbsp
+                <a href="https://linkedin.com/in/alan-coiradas" target="_blank"><i class="fa-brands fa-square-linkedin fs-2 text-black"></i></a> &nbsp;|&nbsp
             </div>
-            <div>
-                ✉️ <a href="mailto:tumail.com">Contact me via e-mail</a> &nbsp;|&nbsp;
-            </div>
-            <div>
-                ▶️ <em>Want a live walkthrough? Send me a DM!</em>
-            </div>
+            <a target="_blank" href="mailTo:alancoiradas00@gmail.com"><i class="fa-solid fa-envelope fs-2 text-black"></i></a>
         </div>
         <small>© 2025 Developed by Alan Coiradas</small>
     </footer>
@@ -98,6 +95,7 @@
     .register{
         border-style: solid;
         border-color: #37ABDB !important;
+        background-color: #32EAFB;
     }
     .register:hover, .login:hover{
             background-color: #37ABDB;
@@ -108,7 +106,7 @@
         background-color: aquamarine !important;
     }
     
-    footer>div>div>a{
+    #healthmanager-home{
         text-decoration: none;
     }
 </style>

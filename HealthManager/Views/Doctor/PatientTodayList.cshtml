@@ -7,18 +7,18 @@
 
 
     <section class="d-flex flex-column justify-content-start align-items-center w-100 h-100">
+        <h2 class="fs-5 fw-bold">
+                Patients for @{
+                    string date = DateOnly.FromDateTime(DateTime.Now).ToString("dd/MM/yyyy");
+                }
+                @date
+            </h2>
         @if (!Model.Any())
         {
            <p>There's no patients for today.</p>
         }
         else
         {
-            <h2 class="fs-5 fw-bold">
-                Patients for @{
-                    string date = DateOnly.FromDateTime(DateTime.Now).ToString("dd/MM/yyyy");
-                }
-                @date
-            </h2>
             <table class="table table-hover">
                 <thead>
                     <tr>

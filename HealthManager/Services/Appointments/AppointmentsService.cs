@@ -48,7 +48,7 @@ namespace HealthManager.Services.Appointments
 
         }
 
-        public async Task <MethodResponse> CreateDoctorAppointments(int doctorId)
+        public async Task <MethodResponse> CreateSingleDoctorAppointments(int doctorId)
         {
             var doctorProfile = await _context.Doctors
                 .Where(x => x.DoctorId == doctorId)
@@ -76,9 +76,8 @@ namespace HealthManager.Services.Appointments
             };
             List<DoctorDTO> doctorList = [];
             doctorList.Add(newDoctorProfile);
-            int currentDayNumber = DateTime.Now.Day;
 
-            await CreateDoctorAppointments(doctorList, currentDayNumber);
+            await CreateDoctorAppointments(doctorList, 1);
 
             return new MethodResponse { Success = true, Message = "Appointments created successfully" };
 

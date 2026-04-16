@@ -9,27 +9,29 @@
         <fieldset class="form-group">
             <label asp-for="Specialty">Specialty</label>
             <select asp-for="Specialty" class="form-control" asp-items="ViewBag.Specialties">
-                <option>Select a Specialty</option>
+                <option>Select a specialty</option>
             </select>
         </fieldset>
 
         <fieldset class="form-group">
             <label asp-for="DoctorId">Select doctor</label>
-            <select asp-for="DoctorId" class="form-control"></select>
+            <select asp-for="DoctorId" class="form-control">
+                <option disabled selected>Select a doctor</option>
+            </select>
         </fieldset>
 
         <div class="d-flex align-items-center justify-content-between date-container">
             <fieldset class="form-group">
                 <label asp-for="AppointmentDate">Date</label>
                 <select asp-for="AppointmentDate" class="form-control">
-                    <option value="">Select a Date</option>
+                    <option value="">Select a date</option>
                 </select>
             </fieldset>
 
             <fieldset class="form-group">
                 <label asp-for="AppointmentHour">Hour</label>
                 <select asp-for="AppointmentHour" class="form-control">
-                    <option value="">Select an Hour</option>
+                    <option value="">Select an hour</option>
                 </select>
             </fieldset>
 
@@ -93,7 +95,16 @@
                     success: function (response) {
                         var doctorSelect = $("#DoctorId");
                         doctorSelect.empty();
+
+                        
+
                         if(response){
+                            doctorSelect.append($('<option>', {
+                            value: "",
+                            text: "Select a doctor",
+                            disabled: true,
+                            selected: true
+                            }));
                             $.each(response, function (index, doctor) {
                                 doctorSelect.append($('<option>', {
                                     value: doctor.doctorId,
@@ -102,7 +113,7 @@
                             });
                             if (response.length == 1){
                                 cleanOptions("#appointmentSelectDate", "#appointmentSelectHour")
-                                var doctor = doctorSelect.val();
+                                var doctor = response[0].doctorId
                                 getAppointmentsDates(doctor);
                             }
                         } else {
@@ -123,6 +134,14 @@
                     success: function (response) {
                         var selectDate = $("#AppointmentDate");
                         selectDate.empty();
+
+                        selectDate.append($('<option>', {
+                        value: "",
+                        text: "Select a date",
+                        disabled: true,
+                        selected: true
+                    }));
+
                         if (response.length > 0) {
                             $.each(response, function (index, date) {
                                 selectDate.append($('<option>', {
@@ -131,8 +150,15 @@
                                 }))
                             })
                             cleanOptions("#AppointmentHour");
-                            var firstDateInCollection = selectDate.val();
-                            getAppointmentsHours(firstDateInCollection, doctor);
+                           // var firstDateInCollection = response[0];
+                            //getAppointmentsHours(firstDateInCollection, doctor);
+                            var selectHour = $("#AppointmentHour");
+                            selectHour.append($('<option>', {
+                            value: "",
+                            text: "Select an hour",
+                            disabled: true,
+                            selected: true
+                            }));
                         }
                     }
                 })
@@ -145,6 +171,14 @@
                     success: function (response) {
                         var selectHour = $("#AppointmentHour");
                         selectHour.empty();
+
+                        selectHour.append($('<option>', {
+                        value: "",
+                        text: "Select an hour",
+                        disabled: true,
+                        selected: true
+                    }));
+
                         if (response.length > 0){
                             $.each(response, function (index, hour) {
                                 selectHour.append($('<option>', {

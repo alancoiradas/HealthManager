@@ -14,5 +14,7 @@ namespace HealthManager.Services.Appointments
 
         public Task<MethodResponse> CreateDoctorAppointments(List<DoctorDTO> doctorList, int dayNumber);
 
+        public Task<MethodResponse> CreateSingleDoctorAppointments(int doctorId);
+
     }
 }

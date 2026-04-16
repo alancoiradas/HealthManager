@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HealthManager.Controllers
 {
+    [Authorize(Roles = "Patient")]
     public class AppointmentController : Controller
     {
         private readonly HealthManagerContext _dbcontext;
@@ -52,7 +53,6 @@ namespace HealthManager.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> ReserveAppointment(AppointmentViewModel appointmentRequest)
         {
             if (ModelState.IsValid)

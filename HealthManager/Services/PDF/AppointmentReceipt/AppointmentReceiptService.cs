@@ -44,7 +44,7 @@ namespace HealthManager.Services.PDF.AppointmentReceipt
                         {
                             table.ColumnsDefinition(columns =>
                             {
-                                columns.RelativeColumn();
+                                columns.RelativeColumn(2);
                                 columns.RelativeColumn(2);
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();

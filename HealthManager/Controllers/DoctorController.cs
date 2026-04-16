@@ -25,10 +25,13 @@ namespace HealthManager.Controllers
         [HttpGet]
         public async Task<IActionResult> PatientTodayList()
         {
+            var userIdString = User.FindFirst("Id")?.Value;
+            int.TryParse(userIdString, out int userIdInt);
             var today = DateOnly.FromDateTime(DateTime.Now);
             List<Appointment> patientList = await _dbcontext.Appointments
-                .Where(x => x.AppointmentDate == today && x.Status == "Reserved" && x.Attended == null)
+                .Where(x => x.DoctorId == userIdInt && x.AppointmentDate == today && x.Status == "Reserved" && x.Attended == null )
                 .Include(a => a.Patient)
+                .OrderBy(x => x.AppointmentHour)
                 .ToListAsync();
             return View(patientList);
         }
@@ -129,8 +132,9 @@ namespace HealthManager.Controllers
         {
             var doctorId = User.FindFirst("Id")?.Value;
             int.TryParse(doctorId, out int doctorIdInt);
+            int.TryParse(query, out int patientDni);
             List<MedicalRecordViewModel> recordsList = await _dbcontext.MedicalRecords
-                .Where(x => x.DoctorId == doctorIdInt && x.Patient.Name.Contains(query) )
+                .Where(x => x.DoctorId == doctorIdInt && x.Patient.Dni == patientDni)
                 .OrderBy(x => x.Date)
                 .Select(x => new MedicalRecordViewModel
                 {

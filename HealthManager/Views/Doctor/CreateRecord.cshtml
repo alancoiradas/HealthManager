@@ -15,18 +15,14 @@
 
 
         <fieldset class="form-group">
-            <label asp-for="DoctorId">Doctor: @{
-                    string doctorName = Model.DoctorName.ToString();
-                }@doctorName</label>
-            <input type="number" asp-for="DoctorId" class="form-control" readonly />
+            <label asp-for="DoctorId">Doctor:</label>
+            <input type="number" asp-for="DoctorId" class="form-control d-none" readonly />
             <input type="text" asp-for="DoctorName" class="form-control" readonly />
         </fieldset>
 
         <fieldset class="form-group">
-            <label asp-for="PatientId">Creating medical record for: @{
-                    string patientName = Model.PatientName;
-                } @patientName</label>
-            <input type="number" asp-for="PatientId" class="form-control" readonly />
+           <label asp-for="PatientId">Creating medical record for:</label>
+            <input type="number" asp-for="PatientId" class="form-control d-none" readonly />
             <input type="text" asp-for="PatientName" class="form-control" readonly />
         </fieldset>
 

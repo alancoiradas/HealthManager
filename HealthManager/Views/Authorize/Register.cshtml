@@ -1,4 +1,4 @@
-﻿@model HealthManager.Models.DTO.PatientViewModel;
+﻿@model HealthManager.Models.DTO.PatientDTO;
 @{
     ViewData["Title"] = "Register";
 <style>
@@ -24,14 +24,14 @@
         <!--Name & Surname-->
         <fieldset class="w-100 d-flex gap-1">
            <div class="w-100 d-flex flex-column gap-1">
-                <div class="w-100 d-flex">
+                <div class="w-100 d-flex flex-column">
                     <label asp-for="Name" class="flex-grow-1"></label>
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <input type="text" asp-for="Name" class="form-control" />
            </div>
            <div class="w-100 d-flex flex-column gap-1">
-                <div class="w-100 d-flex">
+                <div class="w-100 d-flex flex-column">
                     <label asp-for="Surname" class="flex-grow-1"></label>
                     <span asp-validation-for="Surname" class="text-danger"></span>
                 </div>
@@ -69,14 +69,14 @@
         <!--Password & ConfirmPassword-->
         <fieldset class="w-100 d-flex gap-1">
             <div class="w-100 d-flex flex-column gap-1">
-                <div class="w-100 d-flex">
+                <div class="w-100 d-flex flex-column">
                     <label asp-for="Password" class="flex-grow-1"></label>
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <input type="password" asp-for="Password" class="form-control" />
             </div>
             <div class="w-100 d-flex flex-column gap-1">
-                <div class="w-100 d-flex">
+                <div class="w-100 d-flex flex-column">
                     <label asp-for="ConfirmPassword" class="flex-grow-1">Confirm Password</label>
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
