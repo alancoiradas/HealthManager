@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include=".GitHub\Workflows\" />
     <Folder Include="Services\Cookies\" />
   </ItemGroup>
 
@@ -39,10 +38,6 @@
     <Content Include="Services/Mail/mailprofile.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include=".github\workflows\healthmanager-actions.yml" />
   </ItemGroup>
 
 </Project>
